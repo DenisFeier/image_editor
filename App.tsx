@@ -1,24 +1,20 @@
 import React, {useRef, useState} from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  TouchableOpacity,
-  Image,
-  Alert,
-} from 'react-native';
-import {default as MaterialIcons} from 'react-native-vector-icons/MaterialIcons';
-import {default as Entypo} from 'react-native-vector-icons/Entypo';
+import {StyleSheet, SafeAreaView, View, Image, Alert} from 'react-native';
 import {
   ImagePickerResponse,
   launchCamera,
   launchImageLibrary,
 } from 'react-native-image-picker';
-import {savePicture} from './src/util/CameraRoll';
 import ViewShot from 'react-native-view-shot';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+
+import {savePicture} from './src/util/CameraRoll';
+import Header from './src/components/Header';
+import ColorPickerModal from './src/components/ColorPickerModal';
 
 const App = () => {
   const [selectedImage, setSelectedImage] = useState<string>();
+  const [isModalVisible, setModalVisible] = useState(false);
   const ref = useRef<ViewShot | null>(null);
 
   const selectImageHandler = () => {
@@ -86,31 +82,33 @@ const App = () => {
     Alert.alert('Image saved!');
   };
 
+  const openColorPicker = () => {
+    setModalVisible(true);
+  };
+
   return (
-    <SafeAreaView style={[styles.flex1, styles.backgroundColor]}>
-      <View style={[styles.header]}>
-        <TouchableOpacity onPress={selectImageHandler}>
-          <View style={styles.headerBtn}>
-            <MaterialIcons name="add-photo-alternate" size={30} />
+    <SafeAreaProvider>
+      <SafeAreaView style={[styles.flex1, styles.backgroundColor]}>
+        <Header
+          save={saveSelectedImage}
+          selectImage={selectImageHandler}
+          pickColor={openColorPicker}
+        />
+        <ViewShot ref={ref} style={styles.flex1}>
+          <View style={[styles.flex1, styles.innerContainer]}>
+            <Image
+              source={{uri: selectedImage}}
+              style={[styles.flex1]}
+              resizeMode="contain"
+            />
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={saveSelectedImage}>
-          <View style={styles.headerBtn}>
-            <Entypo name="save" size={30} />
-          </View>
-        </TouchableOpacity>
-      </View>
-      <ViewShot ref={ref} style={styles.flex1}>
-        <View style={[styles.flex1, styles.innerContainer]}>
-          <Image
-            source={{uri: selectedImage}}
-            style={[styles.flex1]}
-            resizeMode="contain"
-          />
-        </View>
-      </ViewShot>
-      {/* <View style={styles.flex1}></View> */}
-    </SafeAreaView>
+        </ViewShot>
+      </SafeAreaView>
+      <ColorPickerModal
+        setVisible={setModalVisible}
+        isVisible={isModalVisible}
+      />
+    </SafeAreaProvider>
   );
 };
 
