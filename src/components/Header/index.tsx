@@ -4,6 +4,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface HeaderProps {
   selectImage: () => void;
@@ -12,8 +13,10 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({save, selectImage, pickColor}) => {
+  const {top} = useSafeAreaInsets();
+
   return (
-    <View style={[styles.header]}>
+    <View style={[styles.header, {paddingTop: top}]}>
       <TouchableOpacity onPress={selectImage}>
         <View style={styles.headerBtn}>
           <MaterialIcons name="add-photo-alternate" size={30} />
@@ -39,7 +42,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
+    backgroundColor: '#fff',
   },
   headerBtn: {
     margin: 8,

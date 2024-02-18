@@ -1,21 +1,28 @@
 import React, {useRef, useState} from 'react';
-import {StyleSheet, SafeAreaView, View, Image, Alert} from 'react-native';
+import {StyleSheet, View, Image, Alert} from 'react-native';
 import {
   ImagePickerResponse,
   launchCamera,
   launchImageLibrary,
 } from 'react-native-image-picker';
 import ViewShot from 'react-native-view-shot';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 
 import {savePicture} from './src/util/CameraRoll';
 import Header from './src/components/Header';
-import ColorPickerModal from './src/components/ColorPickerModal';
+import DrawSettingsModal, {
+  ConfirmSelector,
+} from './src/components/DrawSettingsModal';
+import DrawingCanvas from './src/components/DrawingCanvas';
 
 const App = () => {
   const [selectedImage, setSelectedImage] = useState<string>();
   const [isModalVisible, setModalVisible] = useState(false);
   const ref = useRef<ViewShot | null>(null);
+  const [drawSettings, setDrawSettings] = useState<ConfirmSelector>({
+    color: '#000',
+    stroke: 1,
+  });
 
   const selectImageHandler = () => {
     Alert.alert(
@@ -88,7 +95,7 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={[styles.flex1, styles.backgroundColor]}>
+      <SafeAreaView style={[styles.flex1]} edges={['left', 'right']}>
         <Header
           save={saveSelectedImage}
           selectImage={selectImageHandler}
@@ -101,12 +108,19 @@ const App = () => {
               style={[styles.flex1]}
               resizeMode="contain"
             />
+            <View style={styles.drawContainer}>
+              <DrawingCanvas
+                selectedColor={drawSettings.color}
+                selectedStroke={drawSettings.stroke}
+              />
+            </View>
           </View>
         </ViewShot>
       </SafeAreaView>
-      <ColorPickerModal
+      <DrawSettingsModal
         setVisible={setModalVisible}
         isVisible={isModalVisible}
+        onConfirm={setDrawSettings}
       />
     </SafeAreaProvider>
   );
@@ -117,10 +131,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   innerContainer: {
-    backgroundColor: '#fff',
-  },
-  backgroundColor: {
-    backgroundColor: '#ccc',
+    backgroundColor: '#f6f5fa',
   },
   header: {
     flexDirection: 'row',
@@ -129,6 +140,13 @@ const styles = StyleSheet.create({
   },
   headerBtn: {
     margin: 8,
+  },
+  drawContainer: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 });
 

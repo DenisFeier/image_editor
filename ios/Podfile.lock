@@ -944,7 +944,7 @@ PODS:
   - React-Mapbuffer (0.73.4):
     - glog
     - React-debug
-  - react-native-cameraroll (7.4.0):
+  - react-native-cameraroll (7.4.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1391,7 +1391,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 9ac353eccf6ab54d1e0a33862ba91221d1e88460
   React-logger: 0a57b68dd2aec7ff738195f081f0520724b35dab
   React-Mapbuffer: 63913773ed7f96b814a2521e13e6d010282096ad
-  react-native-cameraroll: 3301d62d45616ee9da55ceed04be8d788c3de3ef
+  react-native-cameraroll: 1c980a71284ab9b86bdb65476bf20fdb57fb5021
   react-native-image-picker: 6c51359eca7a7df9f07e297218c25696eb9da976
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-skia: 88bc2430278842f46935d77888059bc1a2f564b6
